@@ -1,36 +1,27 @@
-// Load questions from CSV file
-const questions = [];
-
-// Function to fetch questions from CSV
-function fetchQuestions() {
-    // Fetch CSV file
-    fetch('questions.csv')
-        .then(response => response.text())
-        .then(text => {
-            // Parse CSV
-            const rows = text.split('\n');
-            rows.forEach(row => {
-                questions.push(row.trim());
-            });
-        });
+// Function to fetch CSV file
+async function fetchCSV() {
+    const response = await fetch('questions.csv');
+    const data = await response.text();
+    return data;
 }
 
-// Generate random question
-function generateQuestion() {
-    const questionNumberInput = document.getElementById('questionNumber');
-    const questionNumber = parseInt(questionNumberInput.value);
-    if (questionNumber >= 1 && questionNumber <= 1000) {
-        const question = questions[questionNumber - 1];
-        document.getElementById('question').textContent = question;
-    } else {
-        alert('Please enter a number between 1 and 1000.');
-    }
+// Function to parse CSV data and extract questions
+function parseCSV(csvData) {
+    const lines = csvData.split('\n');
+    const questions = lines.map(line => line.trim()).filter(line => line !== '');
+    return questions;
 }
 
-// Set question number from keypad
-function setQuestionNumber(number) {
-    document.getElementById('questionNumber').value = number;
+// Function to get a random question
+function getRandomQuestion(questions) {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    return questions[randomIndex];
 }
 
-// Load questions on page load
-window.onload = fetchQuestions;
+// Function to update the question on button click
+document.getElementById('newQuestionBtn').addEventListener('click', async function() {
+    const questionElement = document.getElementById('question');
+    const csvData = await fetchCSV();
+    const questions = parseCSV(csvData);
+    questionElement.textContent = getRandomQuestion(questions);
+});
