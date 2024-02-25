@@ -81,3 +81,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
   fetchButtonNames();
 });
+
+// Add this function to your script.js file
+function getQuestion() {
+    var questionNumber = document.getElementById('questionNumber').value;
+
+    // Validate if the entered value is within the range of 1-1000
+    if (questionNumber < 1 || questionNumber > 1000) {
+        alert("Please enter a number between 1 and 1000.");
+        return;
+    }
+
+    var questionIndex;
+    var csvFileName;
+
+    // Determine which CSV file to pull the question from based on the submitted number
+    if (questionNumber <= 333) {
+        csvFileName = "level1qs.csv";
+        questionIndex = questionNumber;
+    } else if (questionNumber <= 666) {
+        csvFileName = "level2qs.csv";
+        questionIndex = questionNumber - 333;
+    } else if (questionNumber <= 1000) {
+        csvFileName = "level3qs.csv";
+        questionIndex = questionNumber - 666;
+    }
+
+    // Fetch the CSV file using Fetch API
+    fetch(csvFileName)
+        .then(response => response.text())
+        .then(data => {
+            // Parse CSV data
+            var rows = data.split('\n');
+            // Extract the question at the specified index
+            var question = rows[questionIndex - 1];
+            // Display the question
+            alert("Question " + questionNumber + ": " + question);
+        })
+        .catch(error => {
+            console.error('Error fetching CSV file:', error);
+        });
+}
+
