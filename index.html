@@ -1,82 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1000 Great Questions</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1000 Great Questions</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>1000 Great Questions</h1>
-        <button id="randomButton">Random Question</button>
-        <div class="keypad">
-            <button onclick="setQuestionNumber(1)">1</button>
-            <!-- Add other number buttons here -->
-            <!-- For example: <button onclick="setQuestionNumber(2)">2</button> -->
-        </div>
-        <input type="number" id="questionNumber" placeholder="Enter question number (1-1000)">
-        <button onclick="generateQuestion()">Generate</button>
-        <p id="question"></p>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
-
-<style>
-    .keypad {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-    .key {
-        padding: 15px;
-        font-size: 20px;
-        text-align: center;
-        background-color: #666;
-        color: #fff;
-        border: 1px solid #ccc;
-        cursor: pointer;
-    }
-    input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-    input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        margin-top: 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-    }
-</style>
-</head>
-<body>
-<div class="keypad">
-    <div class="key" onclick="appendToField('1')">1</div>
-    <div class="key" onclick="appendToField('2')">2</div>
-    <div class="key" onclick="appendToField('3')">3</div>
-    <div class="key" onclick="appendToField('4')">4</div>
-    <div class="key" onclick="appendToField('5')">5</div>
-    <div class="key" onclick="appendToField('6')">6</div>
-    <div class="key" onclick="appendToField('7')">7</div>
-    <div class="key" onclick="appendToField('8')">8</div>
-    <div class="key" onclick="appendToField('9')">9</div>
-    <div class="key" onclick="appendToField('0')">0</div>
-</div>
-<input type="text" id="inputField" placeholder="Enter your 10-digit number">
-<input type="submit" value="Submit">
-<script>
-    function appendToField(digit) {
-        document.getElementById('inputField').value += digit;
-    }
-</script>
+  <header>
+    <h1>1000 Great Questions</h1>
+  </header>
+  <main>
+    <button id="new-question">New Question</button>
+    <div id="questions-container"></div>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
