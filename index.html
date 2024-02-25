@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Answer Lookup</title>
+    <title>1000 Great Questions</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Number Answer Lookup</h1>
-    <input type="number" id="inputNumber" placeholder="Enter a number">
-    <button onclick="lookupAnswer()">Get Answer</button>
-    <div id="answerDisplay"></div>
-
+    <div class="container">
+        <h1>1000 Great Questions</h1>
+        <button id="randomButton">Random Question</button>
+        <div class="keypad">
+            <button onclick="setQuestionNumber(1)">1</button>
+            <!-- Add other number buttons here -->
+            <!-- For example: <button onclick="setQuestionNumber(2)">2</button> -->
+        </div>
+        <input type="number" id="questionNumber" placeholder="Enter question number (1-1000)">
+        <button onclick="generateQuestion()">Generate</button>
+        <p id="question"></p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
