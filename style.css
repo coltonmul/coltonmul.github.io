@@ -53,20 +53,3 @@ footer {
   margin-top: 20px;
 }
 
-
-body {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    text-align: center;
-}
-
-input[type="number"],
-button {
-    margin-bottom: 10px;
-}
