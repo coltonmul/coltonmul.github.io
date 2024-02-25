@@ -1,0 +1,54 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: Helvetica, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+h1 {
+  font-weight: bold;
+}
+
+p {
+  text-align: center;
+}
+
+button {
+  color: white;
+  background-color: transparent;
+  border: 2px solid white;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  box-shadow: 0 0 20px white;
+}
+
+footer {
+  text-align: center;
+  margin-top: 500px;
+}
+
+#questionContainer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+#phrasesText {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+#levelButtons {
+  text-align: center;
+  margin-top: 20px;
+}
