@@ -4,23 +4,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const level2Button = document.getElementById('level2Button');
     const level3Button = document.getElementById('level3Button');
     const questionContainer = document.getElementById('questionContainer');
+    const questionNumberInput = document.getElementById('questionNumber');
 
     // Function to fetch a random question based on the selected level
-    const fetchRandomQuestion = (level) => {
+    const fetchRandomQuestion = (level, questionNumber) => {
         fetch(`level${level}qs.csv`)
             .then(response => response.text())
             .then(data => {
                 const questions = data.split('\n').filter(q => q.trim() !== '');
                 const randomIndex = Math.floor(Math.random() * questions.length);
                 const randomQuestion = questions[randomIndex];
-                fadeInQuestion(randomQuestion);
+                fadeInQuestion(questionNumber, randomQuestion);
             });
     };
 
     // Function to fade in the question container with the provided question text
-    const fadeInQuestion = (questionText) => {
+    const fadeInQuestion = (questionNumber, questionText) => {
         questionContainer.style.opacity = 0; // Start with opacity 0
-        questionContainer.innerHTML = questionText;
+        questionContainer.innerHTML = `Question ${questionNumber}: ${questionText}`;
         let opacity = 0;
         const fadeInInterval = setInterval(() => {
             opacity += 0.05; // Increase opacity gradually
@@ -33,19 +34,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listeners for buttons
     randomButton.addEventListener('click', () => {
-        fetchRandomQuestion(3);
+        const questionNumber = questionNumberInput.value;
+        fetchRandomQuestion(3, questionNumber);
     });
 
     level1Button.addEventListener('click', () => {
-        fetchRandomQuestion(1);
+        const questionNumber = questionNumberInput.value;
+        fetchRandomQuestion(1, questionNumber);
     });
 
     level2Button.addEventListener('click', () => {
-        fetchRandomQuestion(2);
+        const questionNumber = questionNumberInput.value;
+        fetchRandomQuestion(2, questionNumber);
     });
 
     level3Button.addEventListener('click', () => {
-        fetchRandomQuestion(3);
+        const questionNumber = questionNumberInput.value;
+        fetchRandomQuestion(3, questionNumber);
     });
 
     // Function to get question based on user input number
@@ -82,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Extract the question at the specified index
                 var question = rows[questionIndex - 1];
                 // Display the question above the submit button
-                questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
+                questionContainer.innerHTML = `Question ${questionNumber}: ${question}`;
                 // Reset zoom level to 1
                 document.documentElement.style.zoom = 1;
                 // Scroll to the top of the page
