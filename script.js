@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const randomQuestion = questions[randomIndex];
                 questionContainer.innerHTML = randomQuestion;
                 questionContainer.style.opacity = 1;
+                     // Set opacity to 1 to trigger fade-in effect
+                questionContainer.style.opacity = 1;
             });
     };
 
