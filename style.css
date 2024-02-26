@@ -78,7 +78,7 @@ footer {
     font-family: Helvetica, sans-serif; /* Match paragraph font style */
 }
 
-.fade-in {
+.fadeIn {
     animation: fadeIn 1s forwards;
 }
 
