@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to fetch a random question based on the selected level
     const fetchRandomQuestion = (level) => {
-                
         // Reset opacity to 0 before fetching new question
         questionContainer.style.opacity = 0;
         
@@ -18,8 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const randomIndex = Math.floor(Math.random() * questions.length);
                 const randomQuestion = questions[randomIndex];
                 questionContainer.innerHTML = randomQuestion;
-                questionContainer.style.opacity = 1;
-                     // Set opacity to 1 to trigger fade-in effect
+                // Set opacity to 1 to trigger fade-in effect
                 questionContainer.style.opacity = 1;
             });
     };
@@ -48,10 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
             csvFileName = "level3qs.csv";
             questionIndex = questionNumber - 666;
         }
-
         
-    // Reset opacity to 0 before fetching new question
-    questionContainer.style.opacity = 0;
+        // Reset opacity to 0 before fetching new question
+        questionContainer.style.opacity = 0;
 
         // Fetch the CSV file using Fetch API
         fetch(csvFileName)
@@ -63,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 var question = rows[questionIndex - 1];
                 // Display the question above the submit button
                 questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
-                questionContainer.style.opacity = 1; 
                 // Set opacity to 1 to trigger fade-in effect
                 questionContainer.style.opacity = 1;
                 // Reset zoom level to 1
@@ -78,23 +74,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listener for random button click
     randomButton.addEventListener('click', () => {
-        questionContainer.style.opacity = 0;
         fetchRandomQuestion(3);
     });
 
     // Event listeners for level buttons
     level1Button.addEventListener('click', () => {
-        questionContainer.style.opacity = 0;
         fetchRandomQuestion(1);
     });
 
     level2Button.addEventListener('click', () => {
-        questionContainer.style.opacity = 0;
         fetchRandomQuestion(2);
     });
 
     level3Button.addEventListener('click', () => {
-        questionContainer.style.opacity = 0;
         fetchRandomQuestion(3);
     });
 
@@ -107,15 +99,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listener for click on submit button
     document.getElementById('submit').addEventListener('click', getQuestion);
-
-
-    // Function to handle fading animation end
-    function handleFadeEnd() {
-        // Remove the 'fade-in' class and add 'fade-out' class after fading animation ends
-        questionContainer.classList.remove('fade-in');
-        questionContainer.classList.add('fade-out');
-    }
-
-    // Event listener to trigger fading animation end
-    questionContainer.addEventListener('transitionend', handleFadeEnd);
 });
