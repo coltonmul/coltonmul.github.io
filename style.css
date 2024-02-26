@@ -71,4 +71,11 @@ footer {
   margin: 10px;
 }
 
+#questionContainer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+  opacity: 0; /* Initially hide the question */
+  transition: opacity 1s ease; /* Add transition effect for opacity */
+}
 
