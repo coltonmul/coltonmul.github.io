@@ -116,7 +116,7 @@ function getQuestion() {
             // Extract the question at the specified index
             var question = rows[questionIndex - 1];
             // Display the question
-            alert("Question " + questionNumber + ": " + question);
+            questionContainer("Question " + questionNumber + ": " + question);
         })
         .catch(error => {
             console.error('Error fetching CSV file:', error);
