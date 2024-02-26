@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Display the question above the submit button
                 questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
                 questionContainer.style.opacity = 1; 
+                // Set opacity to 1 to trigger fade-in effect
+                questionContainer.style.opacity = 1;
                 // Reset zoom level to 1
                 document.documentElement.style.zoom = 1;
                 // Scroll to the top of the page
