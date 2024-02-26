@@ -7,8 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to fetch a random question based on the selected level
     const fetchRandomQuestion = (level) => {
-        // Reset opacity to 0 before fetching new question
-        questionContainer.style.opacity = 0;
+     
         
         fetch(`level${level}qs.csv`)
             .then(response => response.text())
@@ -17,8 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const randomIndex = Math.floor(Math.random() * questions.length);
                 const randomQuestion = questions[randomIndex];
                 questionContainer.innerHTML = randomQuestion;
-                // Set opacity to 1 to trigger fade-in effect
-                questionContainer.style.opacity = 1;
+                
             });
     };
 
@@ -47,8 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             questionIndex = questionNumber - 666;
         }
         
-        // Reset opacity to 0 before fetching new question
-        questionContainer.style.opacity = 0;
+
 
         // Fetch the CSV file using Fetch API
         fetch(csvFileName)
@@ -60,8 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 var question = rows[questionIndex - 1];
                 // Display the question above the submit button
                 questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
-                // Set opacity to 1 to trigger fade-in effect
-                questionContainer.style.opacity = 1;
                 // Reset zoom level to 1
                 document.documentElement.style.zoom = 1;
                 // Scroll to the top of the page
