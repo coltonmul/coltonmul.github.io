@@ -53,7 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 var question = rows[questionIndex - 1];
                 // Display the question above the submit button
                 questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
-                questionContainer.style.opacity = 1;
+                questionContainer.style.opacity = 1;    
+                // Scroll to the top of the page
+                window.scrollTo(0, 0);
             })
             .catch(error => {
                 console.error('Error fetching CSV file:', error);
