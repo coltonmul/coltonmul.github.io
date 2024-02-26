@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const randomQuestion = questions[randomIndex];
                 questionContainer.innerHTML = randomQuestion;
            
-                // Add fade-in class to trigger animation
-                questionContainer.classList.add('fade-in');
+                // Add fadeIn class to trigger animation
+                questionContainer.classList.add('fadeIn');
             });
     };
 
@@ -61,10 +61,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 var question = rows[questionIndex - 1];
                 // Display the question above the submit button
                 questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
-                // Set opacity to 1 to trigger fade-in effect
+                // Set opacity to 1 to trigger fadeIn effect
                 questionContainer.style.opacity = 1;
-                // Add fade-in class to trigger animation
-                questionContainer.classList.add('fade-in');
+                // Add fadeIn class to trigger animation
+                questionContainer.classList.add('fadeIn');
                 // Reset zoom level to 1
                 document.documentElement.style.zoom = 1;
                 // Scroll to the top of the page
