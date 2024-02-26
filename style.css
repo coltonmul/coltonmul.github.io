@@ -79,3 +79,8 @@ footer {
   transition: opacity 1s ease; /* Add transition effect for opacity */
 }
 
+#questionNumber {
+    width: 150px; /* Adjust width as needed */
+    font-size: 16px; /* Adjust font size */
+    font-family: Helvetica, sans-serif; /* Match paragraph font style */
+}
