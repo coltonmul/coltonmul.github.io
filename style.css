@@ -53,6 +53,10 @@ footer {
   margin-top: 20px;
 }
 
+#numberContainer {
+  text-align: center;
+  margin-top: 20px; /* Adjust margin as needed */
+}
 
 
 .input-field { 
