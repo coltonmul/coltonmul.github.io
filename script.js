@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
             questionIndex = questionNumber - 666;
         }
 
+        
+    // Reset opacity to 0 before fetching new question
+    questionContainer.style.opacity = 0;
+
         // Fetch the CSV file using Fetch API
         fetch(csvFileName)
             .then(response => response.text())
