@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to fetch a random question based on the selected level
     const fetchRandomQuestion = (level) => {
-       // Reset opacity to 0 before fetching new question, only if fade-in class is not already applied
-if (!questionContainer.classList.contains('fade-in')) {
-    questionContainer.style.opacity = 0;
-}
+        // Reset opacity to 0 before fetching new question
+        questionContainer.style.opacity = 0;
         
         fetch(`level${level}qs.csv`)
             .then(response => response.text())
@@ -19,9 +17,8 @@ if (!questionContainer.classList.contains('fade-in')) {
                 const randomIndex = Math.floor(Math.random() * questions.length);
                 const randomQuestion = questions[randomIndex];
                 questionContainer.innerHTML = randomQuestion;
-           
-                // Add fade-in class to trigger animation
-                questionContainer.classList.add('fade-in');
+                // Set opacity to 1 to trigger fade-in effect
+                questionContainer.style.opacity = 1;
             });
     };
 
@@ -65,8 +62,6 @@ if (!questionContainer.classList.contains('fade-in')) {
                 questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
                 // Set opacity to 1 to trigger fade-in effect
                 questionContainer.style.opacity = 1;
-                // Add fade-in class to trigger animation
-                questionContainer.classList.add('fade-in');
                 // Reset zoom level to 1
                 document.documentElement.style.zoom = 1;
                 // Scroll to the top of the page
