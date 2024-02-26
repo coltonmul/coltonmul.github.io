@@ -57,9 +57,13 @@ footer {
 
 .input-field { 
   display: block; 
+  align-items: center;
+  justify-content: center;
   width 30%; 
   height 10px; 
   border: 3px solid black; 
   border-radius: 10px; 
   margin: 10px;
 }
+
+
