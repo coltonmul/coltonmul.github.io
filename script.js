@@ -115,11 +115,12 @@ function getQuestion() {
             var rows = data.split('\n');
             // Extract the question at the specified index
             var question = rows[questionIndex - 1];
-            // Display the question
-            alert("Question " + questionNumber + ": " + question);
+            // Display the question above the submit button
+            var questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
+            questionContainer.style.opacity = 1;
         })
         .catch(error => {
             console.error('Error fetching CSV file:', error);
         });
 }
-
