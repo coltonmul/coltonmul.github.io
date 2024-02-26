@@ -17,8 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const randomIndex = Math.floor(Math.random() * questions.length);
                 const randomQuestion = questions[randomIndex];
                 questionContainer.innerHTML = randomQuestion;
-                // Set opacity to 1 to trigger fade-in effect
-                questionContainer.style.opacity = 1;
+           
                 // Add fade-in class to trigger animation
                 questionContainer.classList.add('fade-in');
             });
