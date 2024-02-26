@@ -96,18 +96,18 @@ document.addEventListener('DOMContentLoaded', function () {
             getQuestion();
         }
     });
+
+    // Event listener for click on submit button
+    document.getElementById('submit').addEventListener('click', getQuestion);
+
+
+    // Function to handle fading animation end
+    function handleFadeEnd() {
+        // Remove the 'fade-in' class and add 'fade-out' class after fading animation ends
+        questionContainer.classList.remove('fade-in');
+        questionContainer.classList.add('fade-out');
+    }
+
+    // Event listener to trigger fading animation end
+    questionContainer.addEventListener('transitionend', handleFadeEnd);
 });
-
-// Event listener for click on submit button
-document.getElementById('submit').addEventListener('click', getQuestion);
-
-
-// Function to handle fading animation end
-function handleFadeEnd() {
-    // Remove the 'fade-in' class and add 'fade-out' class after fading animation ends
-    questionContainer.classList.remove('fade-in');
-    questionContainer.classList.add('fade-out');
-}
-
-// Event listener to trigger fading animation end
-questionContainer.addEventListener('transitionend', handleFadeEnd);
