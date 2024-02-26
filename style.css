@@ -40,7 +40,7 @@ footer {
 #questionContainer {
   text-align: center;
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 100%;
   min-height: 100px; /* Adjust the height as needed */
   max-height: 100px; /* Adjust the height as needed */
   overflow-y: auto; /* Add scrollbar if the content exceeds the height */
@@ -49,7 +49,7 @@ footer {
 #phrasesText {
   text-align: center;
   margin-top: 20px;
-  font-size: 16px;
+  font-size: 100%px;
 }
 
 #levelButtons {
@@ -76,6 +76,6 @@ footer {
 
 #questionNumber {
     width: 100px; /* Adjust width as needed */
-    font-size: 18px; /* Adjust font size */
+    font-size: 100%; /* Adjust font size */
     font-family: Helvetica, sans-serif; /* Match paragraph font style */
 }
