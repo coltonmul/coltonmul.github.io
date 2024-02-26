@@ -98,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Event listener for click on submit button
+document.getElementById('submitBtn').addEventListener('click', getQuestion);
 
 // Function to handle fading animation end
 function handleFadeEnd() {
