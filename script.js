@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to fetch a random question based on the selected level
     const fetchRandomQuestion = (level) => {
-        // Reset opacity to 0 before fetching new question
-        questionContainer.style.opacity = 0;
+       // Reset opacity to 0 before fetching new question, only if fade-in class is not already applied
+if (!questionContainer.classList.contains('fade-in')) {
+    questionContainer.style.opacity = 0;
+}
         
         fetch(`level${level}qs.csv`)
             .then(response => response.text())
