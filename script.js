@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 questionContainer.innerHTML = randomQuestion;
                 // Set opacity to 1 to trigger fade-in effect
                 questionContainer.style.opacity = 1;
+                // Add fade-in class to trigger animation
+                questionContainer.classList.add('fade-in');
             });
     };
 
@@ -62,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 questionContainer.innerHTML = "Question " + questionNumber + ": " + question;
                 // Set opacity to 1 to trigger fade-in effect
                 questionContainer.style.opacity = 1;
+                // Add fade-in class to trigger animation
+                questionContainer.classList.add('fade-in');
                 // Reset zoom level to 1
                 document.documentElement.style.zoom = 1;
                 // Scroll to the top of the page
