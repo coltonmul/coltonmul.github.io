@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const randomQuestion = questions[randomIndex];
                 const questionNumber = determineQuestionNumber(level, randomIndex + 1);
                 fadeInQuestion(questionNumber, randomQuestion);
+                window.scrollTo(0, 0); // Scroll to the top of the page
             });
     };
 
