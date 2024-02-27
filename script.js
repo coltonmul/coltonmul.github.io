@@ -129,3 +129,16 @@ document.addEventListener('DOMContentLoaded', function () {
     hideMobileKeyboardOnReturn(element);
     }); 
 });
+
+
+    const hideMobileKeyboardOnReturn = (keyboardEvent) => {
+        element.addEventListener('keyup', (keyboardEvent) => {
+            if (keyboardEvent.code === 'Enter') {
+                element.blur();
+            }
+        });
+    };
+    
+    document.querySelementectorAll('[type=search]').forEach((element) => {
+        hideMobileKeyboardOnReturn(element);
+}); 
