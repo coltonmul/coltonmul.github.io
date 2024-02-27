@@ -116,20 +116,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listener for click on submit button
     document.getElementById('submit').addEventListener('click', getQuestion);
-    
-    // Function to append a digit to the input field
-    const appendToInput = (digit) => {
-        document.getElementById('questionNumber').value += digit;
-    };
-    
-    // Function to clear the input field
-    const clearInput = () => {
-        document.getElementById('questionNumber').value = '';
-    };
-    
-    // Event listeners for the number keypad buttons
-    document.getElementById('keypad1').addEventListener('click', () => {
-        appendToInput('1');
-    });
-    
-    document.getElementById('keypad2').addEventListener('
+});
