@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const level3Button = document.getElementById('level3Button');
     const questionContainer = document.getElementById('questionContainer');
     const questionNumberInput = document.getElementById('questionNumber');
-    const submitButton = document.getElementById('submit');
 
     // Function to fetch a random question based on the selected level
     const fetchRandomQuestion = (level) => {
@@ -45,6 +44,51 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 20); // Adjust the interval for smoother animation
     };
 
+    // Function to get question based on user input number
+    const getQuestion = () => {
+        var questionNumber = questionNumberInput.value;
+
+        // Validate if the entered value is within the range of 1-1000
+        if (questionNumber < 1 || questionNumber > 1000) {
+            alert("Please enter a number between 1 and 1000.");
+            return;
+        }
+
+        var questionIndex;
+        var csvFileName;
+
+        // Determine which CSV file to pull the question from based on the submitted number
+        if (questionNumber <= 333) {
+            csvFileName = "level1qs.csv";
+            questionIndex = questionNumber;
+        } else if (questionNumber <= 666) {
+            csvFileName = "level2qs.csv";
+            questionIndex = questionNumber - 333;
+        } else if (questionNumber <= 1000) {
+            csvFileName = "level3qs.csv";
+            questionIndex = questionNumber - 666;
+        }
+
+        // Fetch the CSV file using Fetch API
+        fetch(csvFileName)
+            .then(response => response.text())
+            .then(data => {
+                // Parse CSV data
+                var rows = data.split('\n');
+                // Extract the question at the specified index
+                var question = rows[questionIndex - 1];
+                // Display the question above the submit button
+                questionContainer.innerHTML = `Question ${questionNumber}: ${question}`;
+                // Reset zoom level to 1
+                document.documentElement.style.zoom = 1;
+                // Scroll to the top of the page
+                window.scrollTo(0, 0);
+            })
+            .catch(error => {
+                console.error('Error fetching CSV file:', error);
+            });
+    };
+
     // Event listeners for buttons
     randomButton.addEventListener('click', () => {
         fetchRandomQuestion(3);
@@ -65,47 +109,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for enter key press on question number input
     questionNumberInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
-            fetchQuestionByNumber();
+            getQuestion();
         }
     });
 
     // Event listener for click on submit button
-    submitButton.addEventListener('click', fetchQuestionByNumber);
-
-    // Function to fetch question based on user input number
-    const fetchQuestionByNumber = () => {
-        const questionNumber = parseInt(questionNumberInput.value);
-        if (questionNumber >= 1 && questionNumber <= 1000) {
-            let level;
-            if (questionNumber <= 333) {
-                level = 1;
-            } else if (questionNumber <= 666) {
-                level = 2;
-            } else {
-                level = 3;
-            }
-
-            fetch(`level${level}qs.csv`)
-                .then(response => response.text())
-                .then(data => {
-                    const questions = data.split('\n').filter(q => q.trim() !== '');
-                    const questionIndex = determineQuestionIndex(level, questionNumber);
-                    const questionText = questions[questionIndex];
-                    fadeInQuestion(questionNumber, questionText);
-                });
-        } else {
-            alert("Please enter a number between 1 and 1000.");
-        }
-    };
-
-    // Function to determine question index based on level and question number
-    const determineQuestionIndex = (level, questionNumber) => {
-        if (level === 1) {
-            return questionNumber - 1;
-        } else if (level === 2) {
-            return questionNumber - 334;
-        } else {
-            return questionNumber - 667;
-        }
-    };
+    document.getElementById('submit').addEventListener('click', getQuestion);
 });
