@@ -64,6 +64,7 @@ footer {
 
 .input-field { 
   text-align: center;
+  font-size: 120%;
   display: block; 
   align-items: center;
   justify-content: center;
