@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "1000 Great Questions",
+    "short_name": "1000 GQs",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#0E0E0C",
+    "background_color": "#F0EBE0",
     "display": "standalone"
 }

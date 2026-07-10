@@ -1,144 +1,232 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const randomButton = document.getElementById('randomButton');
-    const level1Button = document.getElementById('level1Button');
-    const level2Button = document.getElementById('level2Button');
-    const level3Button = document.getElementById('level3Button');
-    const questionContainer = document.getElementById('questionContainer');
-    const questionNumberInput = document.getElementById('questionNumber');
+/* ============================================================
+   1000 GREAT QUESTIONS — site behavior
+   Vanilla JS by rule. Data source: questions.json
+   ({id, level, text} × 1000). No frameworks, no build step.
 
-    // Function to fetch a random question based on the selected level
-    const fetchRandomQuestion = (level) => {
-        fetch(`level${level}qs.csv`)
-            .then(response => response.text())
-            .then(data => {
-                const questions = data.split('\n').filter(q => q.trim() !== '');
-                const randomIndex = Math.floor(Math.random() * questions.length);
-                const randomQuestion = questions[randomIndex];
-                const questionNumber = determineQuestionNumber(level, randomIndex + 1);
-                fadeInQuestion(questionNumber, randomQuestion);
-                window.scrollTo(0, 0); // Scroll to the top of the page
-            });
-    };
+   Interaction model (mirrors the iOS app's Pull screen):
+   - Click a level / Surprise Me → home slides off left, the Pull
+     stage takes over above the fold, questions flick past too fast
+     to read, click to stop → decelerating ticks → lock-in.
+   - Typing a number serves that exact question on the stage,
+     instantly (a direct request is not a gamble — no fake spin).
+   - Logo / "All levels" returns to the home hero.
+   ============================================================ */
+(function () {
+  'use strict';
 
-    // Function to determine the question number based on the selected level and index
-    const determineQuestionNumber = (level, index) => {
-        if (level === 1) {
-            return index;
-        } else if (level === 2) {
-            return index + 333;
-        } else {
-            return index + 666;
+  var LEVELS = {
+    1: { name: 'Level 1 · Warm Up',   cls: 'l1' },
+    2: { name: 'Level 2 · Go Deeper', cls: 'l2' },
+    3: { name: 'Level 3 · All In',    cls: 'l3' }
+  };
+
+  var SWAP_MS = 70;                       // constant-phase swap rate
+  var DECEL_MS = [110, 170, 260, 390, 560]; // slowing ticks before lock-in
+  var MIN_SPIN_MS = 500;                  // never feels rigged
+  var AUTO_STOP_MS = 4000;                // stop by itself if they just watch
+
+  var questions = null;
+  var byLevel = { 1: [], 2: [], 3: [] };
+
+  var state = 'home';                     // home | spinning | stopping | landed
+  var currentPool = 0;                    // 0 = all, 1/2/3 = level
+  var lastId = null;
+  var spinTimer = null;
+  var autoStopTimer = null;
+  var spinStartedAt = 0;
+
+  var el = {
+    home:    document.getElementById('homeView'),
+    stage:   document.getElementById('pullStage'),
+    chip:    document.getElementById('stageChip'),
+    num:     document.getElementById('stageNum'),
+    q:       document.getElementById('stageQ'),
+    bar:     document.getElementById('stageBar'),
+    actions: document.getElementById('stageActions'),
+    input:   document.getElementById('questionNumber'),
+    err:     document.getElementById('pickerr')
+  };
+
+  var ready = fetch('questions.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      questions = data;
+      data.forEach(function (q) { byLevel[q.level].push(q); });
+    });
+
+  // ---------- rendering ----------
+
+  function isBlank(q) { return /_{2,}/.test(q.text); }
+
+  function renderText(q) {
+    if (isBlank(q)) {
+      el.q.textContent = '';
+      var parts = q.text.split(/_{2,}/);
+      parts.forEach(function (part, i) {
+        el.q.appendChild(document.createTextNode(part));
+        if (i < parts.length - 1) {
+          var line = document.createElement('span');
+          line.className = 'blankline';
+          el.q.appendChild(line);
         }
-    };
+      });
+    } else {
+      el.q.textContent = q.text;
+    }
+  }
 
-    // Function to fade in the question container with the provided question number and text
-    const fadeInQuestion = (questionNumber, questionText) => {
-        questionContainer.style.opacity = 0; // Start with opacity 0
-        questionContainer.innerHTML = `Question ${questionNumber}: ${questionText}`;
-        let opacity = 0;
-        const fadeInInterval = setInterval(() => {
-            opacity += 0.05; // Increase opacity gradually
-            questionContainer.style.opacity = opacity;
-            if (opacity >= 1) {
-                clearInterval(fadeInInterval); // Stop interval when opacity reaches 1
-            }
-        }, 20); // Adjust the interval for smoother animation
-    };
+  function renderMeta(q) {
+    var lv = LEVELS[q.level];
+    el.chip.textContent = isBlank(q) ? 'Fill in the blank' : lv.name;
+    el.chip.className = 'stagechip label ' + (isBlank(q) ? '' : lv.cls);
+    el.num.textContent = '#' + q.id;
+  }
 
-    // Function to get question based on user input number
-    const getQuestion = () => {
-        var questionNumber = questionNumberInput.value;
+  function poolQuestions() {
+    return currentPool ? byLevel[currentPool] : questions;
+  }
 
-        // Validate if the entered value is within the range of 1-1000
-        if (questionNumber < 1 || questionNumber > 1000) {
-            alert("Please enter a number between 1 and 1000.");
-            return;
-        }
+  function randomFromPool() {
+    var pool = poolQuestions();
+    var q;
+    do {
+      q = pool[Math.floor(Math.random() * pool.length)];
+    } while (pool.length > 1 && q.id === lastId);
+    return q;
+  }
 
-        var questionIndex;
-        var csvFileName;
+  // ---------- view switching ----------
 
-        // Determine which CSV file to pull the question from based on the submitted number
-        if (questionNumber <= 333) {
-            csvFileName = "level1qs.csv";
-            questionIndex = questionNumber;
-        } else if (questionNumber <= 666) {
-            csvFileName = "level2qs.csv";
-            questionIndex = questionNumber - 333;
-        } else if (questionNumber <= 1000) {
-            csvFileName = "level3qs.csv";
-            questionIndex = questionNumber - 666;
-        }
+  function showStage() {
+    el.home.classList.add('exiting');
+    window.setTimeout(function () { el.home.hidden = true; }, 430);
+    el.stage.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
 
-        // Fetch the CSV file using Fetch API
-        fetch(csvFileName)
-            .then(response => response.text())
-            .then(data => {
-                // Parse CSV data
-                var rows = data.split('\n');
-                // Extract the question at the specified index
-                var question = rows[questionIndex - 1];
-                // Display the question above the submit button
-                questionContainer.innerHTML = `Question ${questionNumber}: ${question}`;
-                // Reset zoom level to 1
-                document.documentElement.style.zoom = 1;
-                // Scroll to the top of the page
-                window.scrollTo(0, 0);
-            })
-            .catch(error => {
-                console.error('Error fetching CSV file:', error);
-            });
-    };
+  function showHome() {
+    stopTimers();
+    state = 'home';
+    el.stage.hidden = true;
+    el.stage.classList.remove('spinning', 'landed');
+    el.home.hidden = false;
+    el.home.classList.remove('exiting');
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
 
-    // Event listeners for buttons
-    randomButton.addEventListener('click', () => {
-        fetchRandomQuestion(3);
+  function stopTimers() {
+    if (spinTimer) { clearInterval(spinTimer); spinTimer = null; }
+    if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
+  }
+
+  // ---------- the pull ----------
+
+  function startSpin(level) {
+    ready.then(function () {
+      currentPool = level;
+      state = 'spinning';
+      spinStartedAt = Date.now();
+      var lv = level ? LEVELS[level] : null;
+      el.chip.textContent = lv ? lv.name : 'Surprise Me';
+      el.chip.className = 'stagechip label ' + (lv ? lv.cls : '');
+      el.num.textContent = ' ';
+      el.stage.classList.add('spinning');
+      el.stage.classList.remove('landed');
+      el.actions.hidden = true;
+      el.bar.hidden = false;
+      showStage();
+
+      stopTimers();
+      spinTimer = setInterval(function () {
+        renderText(randomFromPool());
+      }, SWAP_MS);
+      autoStopTimer = setTimeout(function () {
+        if (state === 'spinning') beginDecel();
+      }, AUTO_STOP_MS);
     });
+  }
 
-    level1Button.addEventListener('click', () => {
-        fetchRandomQuestion(1);
+  function beginDecel() {
+    if (state !== 'spinning') return;
+    state = 'stopping';
+    stopTimers();
+    var i = 0;
+    function tick() {
+      renderText(randomFromPool());
+      i++;
+      if (i < DECEL_MS.length) {
+        window.setTimeout(tick, DECEL_MS[i]);
+      } else {
+        land(randomFromPool());
+      }
+    }
+    window.setTimeout(tick, DECEL_MS[0]);
+  }
+
+  function land(q, seenNote) {
+    state = 'landed';
+    lastId = q.id;
+    el.stage.classList.remove('spinning');
+    el.stage.classList.add('landed');
+    renderText(q);
+    renderMeta(q);
+    el.bar.hidden = true;
+    el.actions.hidden = false;
+  }
+
+  // ---------- direct number pull (always serves, no spin) ----------
+
+  function pullNumber() {
+    ready.then(function () {
+      var n = parseInt(el.input.value, 10);
+      if (!n || n < 1 || n > 1000) {
+        el.err.textContent = 'Pick a number from 1 to 1000';
+        return;
+      }
+      el.err.textContent = '';
+      el.input.value = '';
+      el.input.blur();
+      currentPool = 0;
+      el.stage.classList.remove('spinning');
+      el.bar.hidden = true;
+      el.actions.hidden = false;
+      showStage();
+      land(questions[n - 1]);
     });
+  }
 
-    level2Button.addEventListener('click', () => {
-        fetchRandomQuestion(2);
-    });
+  // ---------- wiring ----------
 
-    level3Button.addEventListener('click', () => {
-        fetchRandomQuestion(3);
-    });
+  document.getElementById('level1Button').addEventListener('click', function () { startSpin(1); });
+  document.getElementById('level2Button').addEventListener('click', function () { startSpin(2); });
+  document.getElementById('level3Button').addEventListener('click', function () { startSpin(3); });
+  document.getElementById('randomButton').addEventListener('click', function () { startSpin(0); });
+  document.getElementById('submit').addEventListener('click', pullNumber);
+  el.input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') pullNumber();
+  });
 
-    // Event listener for enter key press on question number input
-    questionNumberInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            getQuestion();
-        }
-    });
+  // stage click = stop (honoring minimum spin)
+  el.stage.addEventListener('click', function (e) {
+    if (e.target.closest('#stageBack') || e.target.closest('#stageActions')) return;
+    if (state === 'spinning' && Date.now() - spinStartedAt >= MIN_SPIN_MS) {
+      beginDecel();
+    }
+  });
 
-    // Event listener for click on submit button
-    document.getElementById('submit').addEventListener('click', getQuestion);
+  document.getElementById('stageAgain').addEventListener('click', function (e) {
+    e.stopPropagation();
+    startSpin(currentPool);
+  });
 
-    const hideMobileKeyboardOnReturn = (keyboardEvent) => {
-    element.addEventListener('keyup', (keyboardEvent) => {
-        if (keyboardEvent.code === 'Enter') {
-            element.blur();
-            }
-        });
-    };
+  document.getElementById('stageBack').addEventListener('click', function (e) {
+    e.preventDefault();
+    showHome();
+  });
 
-    document.querySelementectorAll('[type=search]').forEach((element) => {
-    hideMobileKeyboardOnReturn(element);
-    }); 
-});
-
-
-    const hideMobileKeyboardOnReturn = (keyboardEvent) => {
-        element.addEventListener('keyup', (keyboardEvent) => {
-            if (keyboardEvent.code === 'Enter') {
-                element.blur();
-            }
-        });
-    };
-    
-    document.querySelementectorAll('[type=search]').forEach((element) => {
-        hideMobileKeyboardOnReturn(element);
-}); 
+  // logo always brings back the home hero
+  document.getElementById('logoHome').addEventListener('click', function (e) {
+    e.preventDefault();
+    showHome();
+  });
+})();

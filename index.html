@@ -3,75 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1000 Great Questions</title>
+<title>1000 Great Questions — Skip the small talk</title>
+<meta name="description" content="1000 conversation questions in three levels of depth. Pick a level, pull a question, go around the table. Built for forums, retreats, and any meeting that deserves better than small talk.">
+<meta property="og:title" content="1000 Great Questions">
+<meta property="og:description" content="Pick a level, pull a question, skip the small talk.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://1000greatquestions.com">
+<meta property="og:image" content="https://1000greatquestions.com/android-chrome-512x512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0E0E0C">
 </head>
 <body>
 
-<header>
-  <h1>1000 Great Questions</h1>
- 
-  <div id="levelButtons">
-    <button id="level1Button">Level 1</button>
-    <button id="level2Button">Level 2</button>
-    <button id="level3Button">Level 3</button>
+<nav>
+  <a class="wordmark display" href="/" id="logoHome">1000 <em>Great</em> Questions</a>
+  <div class="navright">
+    <a class="navlink meta" href="#levels">The Levels</a>
+    <a class="navlink meta" href="#modes">Ways to Run It</a>
+    <a class="navlink meta" href="https://forumplaybook.com" target="_blank" rel="noopener">A Forum Playbook Tool</a>
+    <a class="btn btn-warm" href="#app"><span>Get the App</span></a>
   </div>
-  
-</header>
+</nav>
+<div class="stripe"></div>
 
-<main>
-  <div id="questionContainer"></div>
+<div id="homeView">
+  <header class="hero">
+    <div class="kicker label">One thousand questions &middot; Three levels deep</div>
+    <h1 class="display"><span class="skipword">Skip</span> the<br>small <span class="accent">talk.</span></h1>
+    <p class="sub">Pick a level, pull a question, go around the table. Built for forums, retreats, and any meeting that deserves better than "how was your weekend."</p>
+  </header>
 
-  <p>
-    Or pick a question from 1-1000
-  </p>
-  <div id="numberContainer">
-  <input type="number" id="questionNumber" min="1" max="1000" placeholder="1-1000" maxlength="4" inputmode="numeric">
-  <button id="submit" onclick="getQuestion()">Submit</button>
+  <section class="tool">
+    <div class="controls">
+      <button class="btn btn-l1" id="level1Button"><span>Level 1 &middot; Warm Up</span></button>
+      <button class="btn btn-l2" id="level2Button"><span>Level 2 &middot; Go Deeper</span></button>
+      <button class="btn btn-l3" id="level3Button"><span>Level 3 &middot; All In</span></button>
+      <button class="btn btn-warm" id="randomButton"><span>Surprise Me</span></button>
+    </div>
+    <div class="pickrow">
+      <input id="questionNumber" type="number" min="1" max="1000" placeholder="1&ndash;1000" inputmode="numeric" aria-label="Pull a specific question by number">
+      <button class="btn btn-ghost" id="submit"><span>Pull It</span></button>
+    </div>
+    <div class="pickerr meta" id="pickerr" role="alert"></div>
+    <p class="picknote meta">Every question has a number. "Pull #247" works here and in the app.</p>
+  </section>
+</div>
+
+<!-- The Pull: takes over above the fold; mirrors the app's draw screen -->
+<section id="pullStage" hidden>
+  <div class="stagetop">
+    <a href="#" id="stageBack" class="label">&larr; All levels</a>
+    <span id="stageChip" class="stagechip label"></span>
   </div>
- <br>
-  <br>
-  <br>
-  <br>4 ways to use this site:
-    <br>
-      <br>
-  
-  Option 1: Open the meeting with each member picking a number, they have 1 sentence (or 1 minute) to answer.
-<br>
-  <br>
-  <br>
-  Option 2: Each member selects what level question they want. They have that many minutes to answer the question they are served.
-  <br>
-  <br>
-  <br>
-  Option 3: Each member picks a question, after hearing the question, they pick a different member to answer it.
-  <br>
-  <br>
-  <br>
-  Option 4: Each meeting, one member picks a question. Every member has 1 minute to answer the question.
-  <br>
-  <br>
-  <br>
+  <div class="stagenum meta" id="stageNum">&nbsp;</div>
+  <div class="stageq" id="stageQ"></div>
+  <div class="stageactions" id="stageActions" hidden>
+    <button class="btn btn-warm" id="stageAgain"><span>Different Question</span></button>
+  </div>
+  <div class="stagebar label" id="stageBar" hidden>Click to stop</div>
+</section>
 
-  <p>
-    <button id="randomButton">Pull A Random Question</button>
-  </p>
+<section class="section alt" id="levels">
+  <div class="section-inner">
+    <div class="kicker label">The system</div>
+    <h2 class="display">Three levels. One direction: down.</h2>
+    <p class="lede">Same numbering as always &mdash; 1 to 1000. The level tells you how deep the water is before you jump.</p>
+    <div class="levelgrid">
+      <div class="levelcard l1">
+        <div class="bar"></div>
+        <div class="inner">
+          <h3 class="heading">Level 1</h3>
+          <div class="lname label">Warm Up</div>
+          <p>Icebreakers with actual flavor. Zero risk, easy laughs, gets everyone talking in the first five minutes.</p>
+          <div class="sampleq">"What show could you start over and rewatch right now?"</div>
+        </div>
+      </div>
+      <div class="levelcard l2">
+        <div class="bar"></div>
+        <div class="inner">
+          <h3 class="heading">Level 2</h3>
+          <div class="lname label">Go Deeper</div>
+          <p>Habits, history, opinions you actually hold. The middle depth where real conversation starts.</p>
+          <div class="sampleq">"What do you need less of in your life right now?"</div>
+        </div>
+      </div>
+      <div class="levelcard l3">
+        <div class="bar"></div>
+        <div class="inner">
+          <h3 class="heading">Level 3</h3>
+          <div class="lname label">All In</div>
+          <p>The heavy stuff. Fear, regret, clarity, truth. For rooms with trust already in the bank.</p>
+          <div class="sampleq">"What truth about being human took you the longest to accept?"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-</main>
+<section class="section" id="modes">
+  <div class="section-inner">
+    <div class="kicker label">Ways to run it</div>
+    <h2 class="display">Four plays for your next meeting.</h2>
+    <p class="lede">The same four formats you already use &mdash; now named, so you can call the play instead of explaining the rules.</p>
+    <div class="modegrid">
+      <div class="modecard">
+        <div class="num">01</div>
+        <span class="mtag label">Opener</span>
+        <h3 class="heading">Pick Your Number</h3>
+        <p>Everyone calls a number from 1 to 1000, answers in one sentence or one minute. Fast, fair, zero prep.</p>
+      </div>
+      <div class="modecard">
+        <div class="num">02</div>
+        <span class="mtag label">Depth for time</span>
+        <h3 class="heading">Choose Your Level</h3>
+        <p>Each member picks a level and gets that many minutes to answer whatever they're served. Depth costs time.</p>
+      </div>
+      <div class="modecard">
+        <div class="num">03</div>
+        <span class="mtag label">Pass it on</span>
+        <h3 class="heading">Hot Potato</h3>
+        <p>Pull a question, hear it, then hand it to the member of your choice. Nobody hides in the back row.</p>
+      </div>
+      <div class="modecard">
+        <div class="num">04</div>
+        <span class="mtag label">One for all</span>
+        <h3 class="heading">One Question, Every Voice</h3>
+        <p>One member picks the question. Every member gets one minute on it. Best for comparing where people really stand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section appband" id="app">
+  <div class="section-inner">
+    <div>
+      <div class="kicker label">Coming to iOS</div>
+      <h2 class="display">The whole deck,<br>in your pocket.</h2>
+      <p>Same 1000 questions, same numbering, same three levels &mdash; plus favorites, history, and guided meeting modes with a built-in timer. From the maker of Forum Timer.</p>
+    </div>
+    <div class="iconwrap">
+      <img class="appicon-img" src="/android-chrome-512x512.png" alt="1000 Great Questions app icon" width="180" height="180">
+    </div>
+  </div>
+</section>
 
 <footer>
-  <p> <font size="-1"> <a href="https://ColtonMulligan.com" style="color: lightgray" target="_blank" rel="noopener">Colton</a> built this little site initially in a few hours using ChatGPT and Gemini. 
-    He doesn't know shit about code so if it's broken, he's sorry.</font></p>
-
-<br>
-  <p> <font size="-1"> <i>Disclaimer: I created/copied these questions, and ChatGPT 'created' some as well, so please don't take offense if you've seen one of these questions elsewhere. Also, they're just conversation questions, calm down.</i> </font> </p>
-</br>
+  <div class="finner">
+    <div>
+      <div class="fmark display">1000 <em>Great</em> Questions</div>
+      <p><a href="https://coltonmulligan.com" target="_blank" rel="noopener">Colton</a> built the first version of this site in a few hours. It got better. Some questions are original, some are borrowed, all of them work. They're conversation questions &mdash; calm down.</p>
+    </div>
+    <div class="fright meta">
+      A Forum Playbook tool<br>
+      <a href="https://forumplaybook.com" target="_blank" rel="noopener">forumplaybook.com</a><br><br>
+      &copy; 2026
+    </div>
+  </div>
 </footer>
 
 <script src="script.js"></script>
