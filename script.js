@@ -1,5 +1,5 @@
 /* ============================================================
-   1000 GREAT QUESTIONS — site behavior
+   1000 GREAT QUESTIONS: site behavior
    Vanilla JS by rule. Data source: questions.json
    ({id, level, text} × 1000). No frameworks, no build step.
 
@@ -8,7 +8,7 @@
      stage takes over above the fold, questions flick past too fast
      to read, click to stop → decelerating ticks → lock-in.
    - Typing a number serves that exact question on the stage,
-     instantly (a direct request is not a gamble — no fake spin).
+     instantly (a direct request is not a gamble, so no fake spin).
    - Logo / "All levels" returns to the home hero.
    ============================================================ */
 (function () {

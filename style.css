@@ -1,5 +1,5 @@
 /* ============================================================
-   1000 GREAT QUESTIONS — site styles
+   1000 GREAT QUESTIONS: site styles
    Forum Playbook brand system v2.0 (forumplaybook.com/brand)
    Vanilla CSS by rule. No frameworks, no build step.
    ============================================================ */
@@ -121,7 +121,7 @@ nav .btn{padding:12px 22px;font-size:11px;}
 @keyframes homein{from{opacity:0;transform:translateX(-64px);}to{opacity:1;transform:none;}}
 
 /* ============================================================
-   THE PULL STAGE — above the fold, mirrors the app draw screen
+   THE PULL STAGE: above the fold, mirrors the app draw screen
    ============================================================ */
 #pullStage[hidden]{display:none;}
 #pullStage{
