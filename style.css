@@ -300,6 +300,11 @@ footer a:hover{color:var(--burn);}
 footer .fright{font-size:11px;text-align:right;align-self:flex-end;}
 /* Footer privacy link (2026-09-19): 12px, underlined, a 44px tap target. Linen on Pitch measures 16.25 to 1. */
 footer .fright a.fpriv{display:inline-flex;align-items:center;min-height:44px;font-size:12px;text-decoration:underline;text-underline-offset:3px;}
+/* Version and changelog (2026-10-03): 12px, linen on pitch 16.25 to 1, a 44px summary target. */
+footer .fver{margin-top:8px;font-size:12px;text-transform:none;letter-spacing:.04em;color:var(--linen);}
+footer .fver summary{display:inline-flex;align-items:center;min-height:44px;cursor:pointer;}
+footer .fver ul{list-style:none;margin:0;padding:0;max-width:420px;margin-left:auto;text-align:right;line-height:1.5;}
+footer .fver li{margin:0 0 8px;}
 
 @media (max-width:860px){
   .levelgrid,.modegrid{grid-template-columns:1fr;}
